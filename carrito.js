@@ -1,5 +1,8 @@
 import express from 'express';
 import twilio from 'twilio';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import { mensajesMonDB } from './mensajes.js';
 import { productoMonDB } from './productos.js';
 import { logger,loggerError } from './server.js';
@@ -19,7 +22,21 @@ const adminTel = process.env.ADMINTEL
 carrito.use(express.json());
 carrito.use(express.urlencoded({extended: true}))
 
-carrito.get('', async (req,res)=>{
+carrito.use(cookieParser())
+carrito.use(session({
+secret: '123456789!#$%&/()',
+resave: false,
+saveUninitialized: false,
+cookie: {
+    secure: 'auto',
+    maxAge: 600000
+}
+}));
+
+carrito.use(passport.initialize())
+carrito.use(passport.session())
+
+carrito.get('', isAuth, async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         res.render('carritos',{carritos: await carritoMonDB.getAll(), mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
@@ -52,13 +69,13 @@ carrito.delete('/:id', async (req,res) => {
     }
 })
 
-carrito.get('/:id?/productos', async (req,res) => {
+carrito.get('/:id?/productos', isAuth, async (req,res) => {
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         if(req.params.id === undefined){
-            res.render('carritos',{carritos: await carritoMonDB.getAll(), mensajes: await mensajesMonDB.getAll()})
+            res.render('carritos',{carritos: await carritoMonDB.getAll(), mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
         }else{
-            res.render('carrito', {carritos: await carritoMonDB.getById(req.params.id), mensajes: await mensajesMonDB.getAll(), productos: await productoMonDB.getAll()})
+            res.render('carrito', {carritos: await carritoMonDB.getById(req.params.id), mensajes: await mensajesMonDB.getAll(), productos: await productoMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
         } 
     } catch (error) {
         loggerError.error(`${error} - Hubo un error en ruta ${req.url} metodo ${req.method} implementada`)
@@ -75,7 +92,7 @@ carrito.post('/:id/productos/:id_prod', async (req,res) => {
     }
 });
 
-carrito.get('/:id/pedir', async (req,res)=>{
+carrito.get('/:id/pedir', isAuth, async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         const carrito = await carritoMonDB.getById(req.params.id);

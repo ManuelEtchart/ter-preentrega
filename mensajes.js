@@ -1,5 +1,5 @@
 import express from 'express';
-import MensajesDaoMongoDB from './src/DAOs/mensajesDaoMongoDB.js'
+import MensajesDaoMongoDB from './src/DAOs/mensajesDaoMongoDB.js';
 import { loggerError, logger } from './server.js';
 
 const mensajes = express.Router();
@@ -10,7 +10,7 @@ mensajes.use(express.json());
 mensajes.use(express.urlencoded({extended: true}));
 
 mensajes.post('', async (req,res) =>{
-    logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
     try {
         const mensaje = {
             email: req.body.email,

@@ -52,9 +52,6 @@ if(MODO_CLUSTER && cluster.isMaster) {
     })
 
 }else{
-
-    //app.use(express.static('public'));
-
     app.set('views', path.join(path.dirname(''), 'src/views'));
 
     app.engine('.hbs', hbs.engine({
@@ -66,7 +63,6 @@ if(MODO_CLUSTER && cluster.isMaster) {
 
     app.set('view engine', '.hbs');
     
-
     app.use('/api/u', usuarios)
     app.use('/api/carrito', carrito);
     app.use('/api/productos', productos);

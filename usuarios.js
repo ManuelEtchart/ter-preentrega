@@ -1,4 +1,5 @@
 import express  from "express";
+import crypto from 'crypto'
 import path from 'path';
 import multer from "multer";
 import UsuariosDaoMongoDB from "./src/DAOs/usuariosDaoMongoDB.js";
@@ -10,6 +11,7 @@ import { Strategy } from "passport-local";
 import { createTransport } from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config();
+
 
 const usuarios = express.Router();
 
@@ -30,7 +32,6 @@ export const transporter = createTransport({
     }
 });
 
-
 const LocalStrategy = Strategy
 
 passport.use(new LocalStrategy(
@@ -44,8 +45,10 @@ passport.use(new LocalStrategy(
                 logger.info('Usuario no encontrado')
                 return done(null, false);
             }
-    
-            if(!(usuario[0].password == password)){
+
+            const pass = crypto.createHash('sha256').update(password).digest('base64');
+
+            if(!(usuario[0].password == pass)){
                 logger.info('Contraseña invalida')
                 return done(null, false);
             }
@@ -87,7 +90,7 @@ usuarios.use(passport.session());
 usuarios.use(express.json());
 usuarios.use(express.urlencoded({extended: true}));
 
-usuarios.use('/static', express.static(process.cwd() + '/fotos'));
+usuarios.use(express.static(path.join(process.cwd(), 'fotos')));
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
@@ -102,59 +105,61 @@ const upload = multer({storage: storage});
 
 export function isAuth(req, res, next) {
     if(req.isAuthenticated()){
-        next()
+        next();
     } else {
-        res.redirect('/api/u/loginerror')
+        res.redirect('/api/u/loginerror');
     }
-}
+};
 
 usuarios.get('/login', (req, res) =>{
-    logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
-    res.render('login', {mensajes: false})
-})
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
+    res.render('login', {mensajes: false});
+});
 
 usuarios.post('/login', passport.authenticate('local',
     {
         successRedirect: '/api/productos',
         failureRedirect: '/api/u/loginerror'
     }
-))
+));
 
 usuarios.get('/loginerror',(req, res)=>{
-    res.render('error-notif', {errorMsg: 'Error en el login'})
-})
+    res.render('error-notif', {errorMsg: 'Error en el login'});
+});
 
 usuarios.get('/registro', (req, res)=>{
-    logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
     res.render('registro', {mensajes: false});
-})
+});
 
 usuarios.post('/registro', upload.single('foto'), async (req, res)=>{
-    logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
     try {
-        const usuario = await usuariosMonDB.getByEmail(req.body.email)
-        let pathFile = false
+        const usuario = await usuariosMonDB.getByEmail(req.body.email);
+        let pathFile = false;
             
         if(req.file){
-            pathFile = `/fotos/${req.file.originalname}`
-        }
-        //console.log(path.join(process.cwd() + `/fotos/${req.file.originalname}`))
-
+            pathFile = `/fotos/${req.file.originalname}`;
+        };
+        //console.log(path.join(process.cwd(), `fotos/${req.file.originalname}`))
+        
         if (usuario) {
-            res.redirect('/api/u/registroerror')
+            res.redirect('/api/u/registroerror');
         } else {
+            const hash = crypto.createHash('sha256').update(req.body.password).digest('base64');
+            
             await usuariosMonDB.save({
                 email: req.body.email,
                 nombre: req.body.nombreUsuario,
                 apellido: req.body.apellido,
                 edad: req.body.edad,
-                avatar: pathFile || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png',
+                avatar: pathFile || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                 telefono: req.body.telefono,
-                password: req.body.password, //encriptar, telefono, foto
+                password: hash,
                 direccion: req.body.direccion
             });
 
-            emailUser = req.body.email
+            emailUser = req.body.email;
 
             const emailContent = {
                 from: 'Ecommerce <noreply@example.com>',
@@ -166,31 +171,32 @@ usuarios.post('/registro', upload.single('foto'), async (req, res)=>{
                 Nombre: ${req.body.nombreUsuario},
                 Apellido: ${req.body.apellido},
                 Edad: ${req.body.edad},
-                Avatar: ${pathFile || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'},
+                Avatar: ${pathFile || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'},
                 Teléfono: ${req.body.telefono},
-                Password: ${req.body.password}, 
+                Password: ${hash}, 
                 Dirección: ${req.body.direccion}`
-            }
+            };
+
             try {
                 const info = await transporter.sendMail(emailContent);
                 logger.info(info);
             } catch (error) {
                 loggerError.error(`${error} - Hubo un error en el envío del e-mail de registro`);
-            }           
+            };           
 
-            res.redirect('/api/productos')
+            res.redirect('/api/productos');
         }
     } catch (error) {
         loggerError.error(`${error} - Hubo un error en ruta ${req.url} metodo ${req.method} implementada`);
-    }
-})
+    };
+});
 
 usuarios.get('/registroerror',(req, res)=>{
-    res.render('error-notif', {errorMsg: 'Error en el registro'})
-})
+    res.render('error-notif', {errorMsg: 'Error en el registro'});
+});
 
 usuarios.get('/logout', (req, res)=>{
-    logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
     req.logOut();
     res.redirect('/');
 });

@@ -14,6 +14,7 @@
     <input type="text" id="direccion" name="direccion" placeholder="Dirección">
     <label>Teléfono</label>
     <input type="tel" name="telefono" id="phone">
+    <button class="boton" id="combinador">Haz click aqui después de haber ingresado tu teléfono y el código de tu país</button>
     <label>Foto</label>
     <input type="file" name="foto" id="foto">
     <input type="submit" class="boton" value="Registar">
@@ -24,13 +25,19 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/intlTelInput.min.js"></script>
 <script>
-   const phoneInputField = document.querySelector("#phone");
-   const phoneInput = window.intlTelInput(phoneInputField, {
-     utilsScript:
-       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/utils.js",
-   });
+  const phoneInputField = document.querySelector("#phone");
+  const phoneInput = window.intlTelInput(phoneInputField, {
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/utils.js",
+  });
+  const boton = document.querySelector('#combinador');
+  boton.addEventListener('click', (e)=>{
 
-   
+    e.preventDefault();
 
-   //console.log(document.querySelector('#phone'))
- </script>
+    const phoneNumber = phoneInput.getNumber();
+
+    phoneInputField.value = phoneNumber;
+  })
+  
+</script>

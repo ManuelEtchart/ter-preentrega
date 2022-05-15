@@ -31,18 +31,18 @@ productos.use(passport.session())
 
 const administrador = true;
 
-productos.get('/form', async (req,res)=>{
+productos.get('/form', isAuth, async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
-    res.render('productosForm', {mensajes: await mensajesMonDB.getAll()});
+    res.render('productosForm', {mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)});
 });
 
-productos.get('/:id?', async (req,res) => {
+productos.get('/:id?', isAuth, async (req,res) => {
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         if (req.params.id === undefined) {
             res.render('inicio', {productos: await productoMonDB.getAll(), mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
         }else{
-            res.render('producto',{producto: await productoMonDB.getById(req.params.id), mensajes: await mensajesMonDB.getAll()})
+            res.render('producto',{producto: await productoMonDB.getById(req.params.id), mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
         }
     } catch (error) {
         loggerError.error(`${error} - Hubo un error en ruta ${req.url} metodo ${req.method} implementada`)
