@@ -1,0 +1,36 @@
+<p class="titulo">Registro</p>
+<form action="/api/u/registro" method="post" class="contenedor" enctype="multipart/form-data">
+    <label>Email</label>
+    <input type="email" name="email" id="email" placeholder="ejemplo@mail.com">
+    <label>Password</label>
+    <input type="password" id="password" name="password" placeholder="Password">
+    <label>Nombre</label>
+    <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Nombre">
+    <label>Apellido</label>
+    <input type="text" id="apellido" name="apellido" placeholder="Apellido">
+    <label>Edad</label>
+    <input type="text" id="edad" name="edad" placeholder="18">
+    <label>Dirección</label>
+    <input type="text" id="direccion" name="direccion" placeholder="Dirección">
+    <label>Teléfono</label>
+    <input type="tel" name="telefono" id="phone">
+    <label>Foto</label>
+    <input type="file" name="foto" id="foto">
+    <input type="submit" class="boton" value="Registar">
+</form>
+<p class="titulo">¿Ya tienes una cuenta? Inicia sesión!</p>
+<div class="contenedor">
+    <button class="boton"><a href="/api/u/login">Iniciar Sesión</a></button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/intlTelInput.min.js"></script>
+<script>
+   const phoneInputField = document.querySelector("#phone");
+   const phoneInput = window.intlTelInput(phoneInputField, {
+     utilsScript:
+       "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/utils.js",
+   });
+
+   
+
+   //console.log(document.querySelector('#phone'))
+ </script>

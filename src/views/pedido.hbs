@@ -1,0 +1,24 @@
+<div>
+    <table>
+        <tr>
+            <th>id</th>
+        </tr>
+        <tr>
+            <td>{{carritos.[0]._id}}</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th>Productos Agregados</th>
+            <th>Precio</th>
+        </tr>
+        {{#each carritos.[0].productos}}
+            <tr>
+                <td>{{this.nombre}}</td>
+                <td>${{this.precio}}</td>
+            </tr>
+        {{/each}}
+    </table>
+    <p>Gracias por utilizar nuestros productos! Ten un buen día!</p>
+    <button class="boton"><a href="/api/productos">Ver productos</a></button>       
+</div>

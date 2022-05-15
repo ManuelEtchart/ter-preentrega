@@ -1,0 +1,27 @@
+<p class="titulo">Carritos</p>
+<div id="productos">
+    {{#if carritos.msg}}
+        <p class="aviso">No hay carritos</p>
+    {{else}}
+        {{#if carritos}}
+            <div>
+                <table>
+                    <tr>
+                        <th>id</th>
+                    </tr>
+                {{#each carritos}}
+                    <tr>
+                        <td>{{this._id}}</td>
+                        <td><button class="boton"><a href="/api/carrito/{{this._id}}/productos">Ver</a></button></td>
+                    </tr>
+                {{/each}}
+                </table>       
+            </div>
+        {{/if}}
+    {{/if}}
+    <form action="/api/carrito" method="post">
+        <input type="submit" value="Crear Carrito" class="boton">
+    </form>
+</div>
+<button class="boton"><a href="/api/productos">Ver Productos</a></button>
+<button class="boton"><a href="/api/productos/form">Ingresar Productos</a></button>

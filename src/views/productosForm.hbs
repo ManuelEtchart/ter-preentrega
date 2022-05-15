@@ -1,0 +1,19 @@
+<p class="titulo">Ingrese un producto</p>
+<p class="aviso" id="avisoForm"></p>
+<form action="/api/productos" method="post" class="contenedor">
+    <label>Nombre</label>
+    <input type="text" name="nombre" placeholder="Nombre" id="nombre">
+    <label>Descripción</label>
+    <input type="text" name="descripcion" placeholder="Descripción" id="descripcion">
+    <label>Código</label>
+    <input type="text" name="codigo" placeholder="Código" id="codigo">
+    <label>Stock</label>
+    <input type="text" name="stock" placeholder="Stock" id="stock">
+    <label>Precio</label>
+    <input type="number" name="precio" placeholder="Precio" id="precio">
+    <label>Foto</label>
+    <input type="text" name='urlFoto' placeholder="URL Foto" id="urlFoto">
+    <input type="submit" id="ingresarProd" value="Ingresar" class="boton">
+</form>
+<button class="boton"><a href="/api/productos">Ver Productos</a></button>
+<button class="boton"><a href="/api/carrito">Ir a Carritos</a></button>

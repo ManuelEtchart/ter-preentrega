@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: grey;
+        }.titulo{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+        }.contenedor{
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 2rem;
+            border-radius: 35px 35px 35px 35px;
+            background-color: black;
+            color: green;
+            margin: 30px auto;
+            padding: 20px;
+            width: 50%;
+        }input{
+            font-size: 1.8rem;
+        }label{
+            margin-bottom: 10px;
+        }.boton{
+            margin-top: 50px;
+            border-radius: 35px 35px 35px 35px;
+            cursor: pointer;
+        }table{
+            font-size: 1.5rem;
+            font-family: Arial, Helvetica, sans-serif;
+            width: 50%;
+            margin: 30px auto;
+            text-align: center;
+            color: green;
+            background-color: black;
+            border-radius: 35px 35px 35px 35px;
+        }table th{
+            border-bottom: green solid 2px;
+        }img{
+            width: 70px;
+            height: 70px;
+        }#mensajes{
+            display: flex;
+            flex-direction: column;
+            color: brown;
+        }.mensajeCompleto{
+            font-size: 1.3rem;
+        }.email{
+            color: blue;
+        }.mensaje{
+            color: green;
+        }.aviso{
+            background-color: lightsalmon;
+            color: maroon;
+            font-size: 2rem;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/css/intlTelInput.css"/>
+    <title>Ecommerce - Manuel Etchart</title>
+</head>
+<body>
+    {{#if datosUsuario}}
+    <div>
+        <img src={{datosUsuario.[0].avatar}} alt="foto">
+        <p>Email: {{datosUsuario.[0].email}}</p>
+        <p>Nombre: {{datosUsuario.[0].nombre}}</p>
+        <p>Apellido: {{datosUsuario.[0].apellido}}</p>
+        <p>Edad: {{datosUsuario.[0].edad}}</p>
+        <p>Dirección: {{datosUsuario.[0].direccion}}</p>
+        <p>Teléfono: {{datosUsuario.[0].telefono}}</p>
+        <button class="boton"><a href="/api/u/logout">logout</a></button>
+    </div>
+    {{/if}}
+    {{{body}}}
+    {{#if mensajes}}
+        <p class="titulo">Chat</p>
+        <p class="aviso" id="avisoChat"></p>
+        <form action="/api/mensajes" method="post" class="contenedor">
+            <label>Email</label>
+            <input type="email" name="email" id="email" placeholder="ejemplo@mail.com">
+            <label>Nombre</label>
+            <input type="text" id="nombreMensaje" name="nombreMensaje" placeholder="Nombre">
+            <label>Apellido</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Apellido">
+            <label>Edad</label>
+            <input type="text" id="edad" name="edad" placeholder="18">
+            <label>Alias</label>
+            <input type="text" id="alias" name="alias" placeholder="Alias">
+            <label>Mensaje</label>
+            <input type="text" id="mensaje" name="mensaje" placeholder="Escribe tu mensaje">
+            <input type="submit" id="enviarMsg" class="boton" value="Enviar"> 
+        </form>
+        <div class="contenedor">
+            <p class="mensaje">Mensajes</p>
+            <div id="mensajes">
+                {{#if mensajes.msg}}
+                    <p class="aviso">No hay mensajes</p>
+                {{else}}
+                    {{#if mensajes}}
+                        {{#each mensajes}}
+                            <img src={{../datosUsuario.[0].avatar}}></img>
+                            <p class="mensajeCompleto"><b class="email">{{this.email}}</b> {{this.fecha}}: <i class="mensaje">{{this.mensaje}}</i></p>
+                        {{/each}}
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+</body>
+</html>

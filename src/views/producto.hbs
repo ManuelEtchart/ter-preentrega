@@ -1,0 +1,20 @@
+<div>
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Foto</th>
+        </tr>
+        <tr>
+            <td>{{producto.[0].nombre}}</td>
+            <td>{{producto.[0].descripcion}}</td>
+            <td>{{producto.[0].stock}}uni</td>
+            <td>${{producto.[0].precio}}</td>
+            <td><img src={{producto.[0].foto}}></td>
+        </tr>
+</table>
+</div>
+<button class="boton"><a href="/">Ver Productos</a></button>
+<button class="boton"><a href="/api/carrito">Ir a Carritos</a></button>
