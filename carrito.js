@@ -1,19 +1,20 @@
 import express from 'express';
-//import decision from './src/DAOs/decision.js';
+import twilio from 'twilio';
 import { mensajesMonDB } from './mensajes.js';
 import { productoMonDB } from './productos.js';
 import { logger,loggerError } from './server.js';
 import CarritoDaoMongoDB from './src/DAOs/carritoDaoMongoDB.js';
 import { ADMIN_GMAIL, emailUser, isAuth, transporter, usuariosMonDB } from './usuarios.js';
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 const carrito = express.Router();
 
-//const query = await decision()
-//const queryCarrito = query.queryCarrito
-
-
 const carritoMonDB = new CarritoDaoMongoDB()
+
+const accountSid = process.env.ACCOUNTSID;
+const authToken = process.env.AUTHTOKEN;
+const adminTel = process.env.ADMINTEL
 
 carrito.use(express.json());
 carrito.use(express.urlencoded({extended: true}))
@@ -79,11 +80,11 @@ carrito.get('/:id/pedir', async (req,res)=>{
     try {
         const carrito = await carritoMonDB.getById(req.params.id);
         const usuario = await usuariosMonDB.getByEmail(emailUser)
-        console.log(carrito[0].productos)
+        
         const emailContent = {
             from: 'Ecommerce <noreply@example.com>',
             to: `"ADMIN" <${ADMIN_GMAIL}>`,
-            subject: `Nuevo pedido de ${usuario[0].nombre} - ${emailUser}`,
+            subject: `Nuevo pedido de ${usuario[0].nombre} ${usuario[0].apellido} - ${emailUser}`,
             text: `
             ID Carrito: ${req.params.id} 
             Productos Agregados:
@@ -98,7 +99,31 @@ carrito.get('/:id/pedir', async (req,res)=>{
             loggerError.error(`${error} - Hubo un error en el envío del e-mail de registro`);
         }
 
-        res.render('pedido', {carritos: await carritoMonDB.getById(req.params.id)})
+        const client = twilio(accountSid, authToken)
+
+        try {
+            const message = await client.messages.create({
+                body: `Nuevo pedido de ${usuario[0].nombre} ${usuario[0].apellido} - ${emailUser}`,
+                from: 'whatsapp:+14155238886',
+                to: `whatsapp:${adminTel}`
+            })
+            logger.info(message)
+        } catch (error) {
+            loggerError.error(`${error} - Hubo un error en el envío del mensaje al administrador`);
+        }
+
+        try {
+            const message = await client.messages.create({
+                body: 'Su pedido ha sido recibido y se encuentra en proceso. Gracias por confiar en nuestros productos! Ten un buen día!',
+                from: '+19705917560',
+                to: `+${usuario[0].telefono}`
+            })
+            logger.info(message)
+        } catch (error) {
+            loggerError.error(`${error} - Hubo un error en el envío del mensaje al usuario`);
+        }
+
+        res.render('pedido', {carritos: await carritoMonDB.getById(req.params.id), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
     } catch (error) {
         loggerError.error(`${error} - Hubo un error en ruta ${req.url} metodo ${req.method} implementada`)
     }

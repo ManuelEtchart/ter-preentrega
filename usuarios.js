@@ -9,7 +9,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { createTransport } from 'nodemailer';
 import dotenv from 'dotenv';
-const dotenvConfig = dotenv.config()
+dotenv.config();
 
 const usuarios = express.Router();
 

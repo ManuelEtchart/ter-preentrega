@@ -9,7 +9,7 @@ import carrito from './carrito.js';
 import mensajes from './mensajes.js';
 import usuarios from './usuarios.js';
 import dotenv from 'dotenv';
-const dotenvConfig = dotenv.config()
+dotenv.config()
 
 const app = express();
 

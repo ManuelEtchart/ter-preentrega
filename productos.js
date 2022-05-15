@@ -2,14 +2,10 @@ import express from 'express';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
-//import decision from './src/DAOs/decision.js';
 import { loggerError, logger } from './server.js';
 import { mensajesMonDB } from './mensajes.js';
 import ProductosDaoMongoDB from './src/DAOs/productosDaoMongoDB.js';
 import { emailUser, isAuth, usuariosMonDB } from './usuarios.js';
-
-//const query = await decision()
-//const queryProducto = query.queryProducto
 
 const productos = express.Router();
 

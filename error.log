@@ -1,0 +1,2 @@
+[2022-05-15T08:27:22.494] [ERROR] default - TypeError: Cannot read property '0' of null - Hubo un error en ruta /6280bb8b254c1d6248226d24/pedir metodo GET implementada
+[2022-05-15T08:33:02.419] [ERROR] default - Error: The 'To' number 542226553498 is not a valid phone number. - Hubo un error en el envío del mensaje al usuario
