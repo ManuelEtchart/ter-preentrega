@@ -64,7 +64,7 @@ productos.post('', async (req,res) => {
                 stock: req.body.stock
             });
 
-            res.redirect('/api/u/login')
+            res.redirect('/api/productos')
             
         }else{
             loggerError.error(`${error} - Hubo un error en ruta ${req.url} metodo ${req.method} implementada - Ruta no autorizada`)

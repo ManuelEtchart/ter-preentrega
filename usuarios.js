@@ -185,7 +185,7 @@ usuarios.post('/registro', upload.single('foto'), async (req, res)=>{
                 loggerError.error(`${error} - Hubo un error en el envío del e-mail de registro`);
             };           
 
-            res.redirect('/api/productos');
+            res.redirect('/api/u/login');
         }
     } catch (error) {
         loggerError.error(`${error} - Hubo un error en ruta ${req.url} metodo ${req.method} implementada`);
