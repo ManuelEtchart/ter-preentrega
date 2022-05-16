@@ -21,7 +21,7 @@ const adminTel = process.env.ADMINTEL
 
 carrito.use(express.json());
 carrito.use(express.urlencoded({extended: true}))
-
+/*
 carrito.use(cookieParser())
 carrito.use(session({
 secret: '123456789!#$%&/()',
@@ -35,7 +35,7 @@ cookie: {
 
 carrito.use(passport.initialize())
 carrito.use(passport.session())
-
+*/
 carrito.get('', /*isAuth,*/ async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {

@@ -14,7 +14,7 @@ export const productoMonDB = new ProductosDaoMongoDB();
 productos.use(express.json());
 productos.use(express.urlencoded({extended: true}));
 
-
+/*
 productos.use(cookieParser())
 productos.use(session({
 secret: '123456789!#$%&/()',
@@ -28,7 +28,7 @@ cookie: {
 
 productos.use(passport.initialize())
 productos.use(passport.session())
-
+*/
 const administrador = true;
 
 productos.get('/form', /*isAuth,*/ async (req,res)=>{
