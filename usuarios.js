@@ -113,6 +113,7 @@ export function isAuth(req, res, next) {
 
 usuarios.get('/login', (req, res) =>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
+    emailUser = '';
     res.render('login', {mensajes: false});
 });
 
@@ -124,6 +125,7 @@ usuarios.post('/login', passport.authenticate('local',
 ));
 
 usuarios.get('/loginerror',(req, res)=>{
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
     res.render('error-notif', {errorMsg: 'Error en el login'});
 });
 
@@ -141,7 +143,6 @@ usuarios.post('/registro', upload.single('foto'), async (req, res)=>{
         if(req.file){
             pathFile = `/fotos/${req.file.originalname}`;
         };
-        //console.log(path.join(process.cwd(), `fotos/${req.file.originalname}`))
         
         if (usuario) {
             res.redirect('/api/u/registroerror');
@@ -192,6 +193,7 @@ usuarios.post('/registro', upload.single('foto'), async (req, res)=>{
 });
 
 usuarios.get('/registroerror',(req, res)=>{
+    logger.info(`ruta ${req.url} metodo ${req.method} implementada`);
     res.render('error-notif', {errorMsg: 'Error en el registro'});
 });
 

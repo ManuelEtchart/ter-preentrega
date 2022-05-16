@@ -19,7 +19,9 @@
             </tr>
         {{/each}}
     </table>
-    <button class="boton"><a href=/api/carrito/{{carritos.[0]._id}}/pedir >PEDIR</a></button>        
+    {{#if carritos.[0].productos}}
+        <button class="boton"><a href=/api/carrito/{{carritos.[0]._id}}/pedir >PEDIR</a></button> 
+    {{/if}}       
 </div>
 {{#if productos.msg}}
         <p class="aviso">No hay productos</p>

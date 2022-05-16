@@ -1,6 +1,7 @@
 import config from "../utils/config.js";
 import mongoose from "mongoose";
 import { productoMonDB } from "../../productos.js";
+import { loggerError } from "../../server.js";
 
 const URL = config.mongoDB.url;
 
@@ -18,10 +19,10 @@ class ContenedorMongoDB {
             await this.coleccion.insertMany([obj])
             return {'Objeto agregado': obj}
         } catch(error){
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     };
@@ -39,10 +40,10 @@ class ContenedorMongoDB {
                 return docs
             }
         } catch(error){
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     }
@@ -57,10 +58,10 @@ class ContenedorMongoDB {
                 return docs
             }
         } catch(error){
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     }
@@ -75,11 +76,11 @@ class ContenedorMongoDB {
                 return docs
             }
         } catch (error) {
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }
         finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     };
@@ -93,11 +94,11 @@ class ContenedorMongoDB {
             await this.coleccion.updateOne({_id : id},{$set: cambios})
             return {msg: `Objeto ${id} modificado`}
         } catch (error) {
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }
         finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     };
@@ -111,11 +112,11 @@ class ContenedorMongoDB {
             await this.coleccion.deleteOne({_id : id})
             return {msg: `Objeto ${id} eliminado`}
         } catch (error) {
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }
         finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     };
@@ -126,11 +127,11 @@ class ContenedorMongoDB {
             await this.coleccion.deleteMany({})
             return {'msg': 'Todos los objetos han sido eliminados'}
         } catch (error) {
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }
         finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     };
@@ -158,11 +159,11 @@ class ContenedorMongoDB {
             
             return  {msg: `Producto ${id_prod} agregado`}
         } catch (error) {
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }
         finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
         
@@ -187,10 +188,10 @@ class ContenedorMongoDB {
             
             return {msg: `Producto ${id_prod} eliminado`}
         } catch (error) {
-            console.log(error, "Hubo un error");
+            loggerError.error(`${error} - Hubo un error en la base de datos`);
         }finally{
             mongoose.disconnect().catch((error)=>{
-                console.log(error, "Hubo un error");
+                loggerError.error(`${error} - Hubo un error en la base de datos`);
             });
         }
     }

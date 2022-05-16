@@ -1,12 +1,4 @@
-[2022-05-15T12:47:02.322] [WARN] custom - {
-  error: '-2',
-  descripcion: 'ruta /fotos/favicon.ico metodo GET no implementada'
-}
-[2022-05-15T12:47:06.744] [WARN] custom - {
-  error: '-2',
-  descripcion: 'ruta /fotos/favicon.ico metodo GET no implementada'
-}
-[2022-05-15T12:54:38.747] [WARN] custom - {
+[2022-05-16T18:15:55.645] [WARN] custom - {
   error: '-2',
   descripcion: 'ruta /fotos/favicon.ico metodo GET no implementada'
 }

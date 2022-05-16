@@ -3,7 +3,7 @@ const dotenvConfig = dotenv.config()
 
 const config = {
     mongoDB:{
-        url: process.env.MONGODBURL
+        url: process.env.MONGODBURL || 'mongodb://localhost:27017/ecommerce'
     }
 }
 

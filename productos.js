@@ -31,12 +31,12 @@ productos.use(passport.session())
 
 const administrador = true;
 
-productos.get('/form', isAuth, async (req,res)=>{
+productos.get('/form', /*isAuth,*/ async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     res.render('productosForm', {mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)});
 });
 
-productos.get('/:id?', isAuth, async (req,res) => {
+productos.get('/:id?', /*isAuth,*/ async (req,res) => {
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         if (req.params.id === undefined) {

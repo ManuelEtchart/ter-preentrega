@@ -36,7 +36,7 @@ cookie: {
 carrito.use(passport.initialize())
 carrito.use(passport.session())
 
-carrito.get('', isAuth, async (req,res)=>{
+carrito.get('', /*isAuth,*/ async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         res.render('carritos',{carritos: await carritoMonDB.getAll(), mensajes: await mensajesMonDB.getAll(), datosUsuario: await usuariosMonDB.getByEmail(emailUser)})
@@ -69,7 +69,7 @@ carrito.delete('/:id', async (req,res) => {
     }
 })
 
-carrito.get('/:id?/productos', isAuth, async (req,res) => {
+carrito.get('/:id?/productos', /*isAuth,*/ async (req,res) => {
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         if(req.params.id === undefined){
@@ -92,7 +92,7 @@ carrito.post('/:id/productos/:id_prod', async (req,res) => {
     }
 });
 
-carrito.get('/:id/pedir', isAuth, async (req,res)=>{
+carrito.get('/:id/pedir', /*isAuth,*/ async (req,res)=>{
     logger.info(`ruta ${req.url} metodo ${req.method} implementada`)
     try {
         const carrito = await carritoMonDB.getById(req.params.id);
